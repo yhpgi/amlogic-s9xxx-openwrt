@@ -27,7 +27,7 @@ on:
       openwrt_board:
         description: "Select device board"
         required: false
-        default: "all"
+        default: "s905x2"
         type: choice
         options:
           - all
@@ -203,6 +203,7 @@ on:
         type: choice
         options:
           - ophub/kernel
+          - yhpgi/kernel
       kernel_usage:
         description: "Set the tags of the stable kernel."
         required: false
@@ -221,7 +222,7 @@ on:
         options:
           - ophub
           - angel
-          - yourname
+          - yhpgi
 
 env:
   TZ: America/New_York
