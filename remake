@@ -77,7 +77,7 @@ depends_repo="https://github.com/ophub/amlogic-s9xxx-armbian"
 # U-BOOT files download repository
 uboot_repo="https://github.com/ophub/u-boot"
 # Firmware files download repository
-firmware_repo="https://github.com/ophub/firmware"
+firmware_repo="https://github.com/yhpgi/firmware"
 # Install/Update script files download repository
 script_repo="https://github.com/ophub/luci-app-amlogic"
 
@@ -981,6 +981,7 @@ refactor_rootfs() {
     # USB Mediatek Wireless LAN Driver
     echo "mt7601u" >etc/modules.d/mt7601u
     echo "mt7663u" >etc/modules.d/mt7663u
+    echo "mt7668s" >etc/modules.d/mt7668s
     echo "mt76x0u" >etc/modules.d/mt76x0u
     echo "mt76x2u" >etc/modules.d/mt76x2u
     echo "mt76x2e" >etc/modules.d/mt76x2e
