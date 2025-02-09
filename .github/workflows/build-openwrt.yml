@@ -22,7 +22,7 @@ on:
         description: "Select device board"
         required: false
         default: "all"
-        type: choice
+        type: s905x2
         options:
           - all
           - s905w_s905x_s905mb_s905l3a_s905l3b_s905x2_s905x3_s912_s922x_s922x-ct2000_s922x-reva
@@ -201,6 +201,7 @@ on:
         type: choice
         options:
           - ophub/kernel
+          - yhpgi/kernel
       kernel_usage:
         description: "Set the tags of the stable kernel."
         required: false
@@ -227,7 +228,7 @@ on:
         options:
           - ophub
           - angel
-          - yourname
+          - yhpgi
 
 env:
   FEEDS_CONF: config/${{ inputs.source_branch }}/feeds.conf.default
