@@ -47,3 +47,4 @@ Use `.github/workflows/compile-kernel.yml` to build kernels for s905x2 only. Exa
 
 **ImageBuilder Config**
 ImageBuilder customization lives in `config/imagebuilder`.
+Package selection uses OpenWrt defaults only (no custom package list).

@@ -189,3 +189,37 @@ git add README.cn.md documents/README.cn.md
 
 git commit -m "docs: focus on s905x2 imagebuilder and kernel"
 ```
+
+### Task 5: Use Default OpenWrt Packages Only
+
+**Files:**
+- Modify: `config/imagebuilder/imagebuilder.sh`
+- Modify: `README.md`
+- Modify: `documents/README.md`
+- Modify: `config/README.md`
+
+**Step 1: Write the failing test**
+
+Run: `rg -n "custom packages|Custom package|PACKAGES=|config_list" config/imagebuilder/imagebuilder.sh`
+
+Expected: Matches found.
+
+**Step 2: Implement minimal changes**
+
+- Skip custom package downloads and custom package config usage.
+- Build ImageBuilder with default OpenWrt packages only (no extra package list).
+- Update docs to state default package set only.
+
+**Step 3: Run test to verify it passes**
+
+Run: `rg -n "custom packages|Custom package|PACKAGES=|config_list" config/imagebuilder/imagebuilder.sh`
+
+Expected: No matches referencing custom package selection.
+
+**Step 4: Commit**
+
+```bash
+git add config/imagebuilder/imagebuilder.sh README.md documents/README.md config/README.md
+
+git commit -m "chore: use default imagebuilder packages only"
+```

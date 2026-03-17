@@ -29,8 +29,6 @@
 # error_msg               : Output error message and abort
 # download_imagebuilder   : Download and extract the OpenWrt Image Builder
 # adjust_settings         : Adjust Image Builder .config settings
-# custom_packages         : Download and add custom packages
-# custom_config           : Load custom package configuration
 # custom_files            : Add custom overlay files
 # rebuild_firmware        : Build firmware using Image Builder
 # custom_settings         : Apply post-build customizations
@@ -110,51 +108,6 @@ adjust_settings() {
     echo -e "${INFO} [ ${imagebuilder_path} ] directory contents: \n$(ls -lh . 2>/dev/null)"
 }
 
-# Add custom packages
-# If there is a custom package or ipk you would prefer to use create a [ packages ] directory,
-# If one does not exist and place your custom ipk within this directory.
-custom_packages() {
-    cd ${imagebuilder_path}
-    echo -e "${STEPS} Adding custom packages..."
-
-    # Create a [ packages ] directory
-    [[ -d "packages" ]] || mkdir packages
-    cd packages
-
-    # Download luci-app-amlogic
-    amlogic_api="https://api.github.com/repos/ophub/luci-app-amlogic/releases"
-    # Get the latest release version
-    amlogic_plugin_latest_version="$(curl -s ${amlogic_api} | grep tag_name | head -n1 | cut -d '"' -f4)"
-    # Get the download URLs for the latest release assets (ipk or apk files)
-    amlogic_plugin_list=($(curl -s ${amlogic_api} | grep "browser_download_url" | grep -oE "https.*/${amlogic_plugin_latest_version}/.*\.(ipk|apk)"))
-
-    # Download the latest release assets
-    for plugin_url in "${amlogic_plugin_list[@]}"; do
-        curl -fsSOJL "${plugin_url}"
-        [[ "${?}" -eq "0" ]] && echo -e "${INFO} The [ ${plugin_url} ] is downloaded successfully."
-    done
-
-    # Download other luci-app-xxx
-    # ......
-
-    sync && sleep 3
-    echo -e "${INFO} [ packages ] directory contents: \n$(ls -lh . 2>/dev/null)"
-}
-
-# Add custom packages, lib, theme, app and i18n, etc.
-custom_config() {
-    cd ${imagebuilder_path}
-    echo -e "${STEPS} Loading custom package configuration..."
-
-    config_list=""
-    if [[ -s "${custom_config_file}" ]]; then
-        config_list="$(sed -n 's/^CONFIG_PACKAGE_\(.*\)=y$/\1/p' "${custom_config_file}" | tr '\n' ' ')"
-        echo -e "${INFO} Custom package list: \n$(echo "${config_list}" | tr ' ' '\n')"
-    else
-        echo -e "${INFO} No custom configuration file found, skipped."
-    fi
-}
-
 # Add custom files
 # The FILES variable allows custom configuration files to be included in images built with Image Builder.
 # The [ files ] directory should be placed in the Image Builder root directory where you issue the make command.
@@ -179,31 +132,8 @@ rebuild_firmware() {
     cd ${imagebuilder_path}
     echo -e "${STEPS} Building OpenWrt firmware with Image Builder..."
 
-    # Selecting default packages, lib, theme, app and i18n, etc.
-    my_packages="\
-        acpid attr base-files bash bc blkid block-mount blockd bsdtar btrfs-progs busybox bzip2 \
-        cgi-io chattr comgt comgt-ncm containerd coremark coreutils coreutils-base64 coreutils-nohup \
-        coreutils-truncate curl docker docker-compose dockerd dosfstools dumpe2fs e2freefrag e2fsprogs \
-        exfat-mkfs f2fs-tools f2fsck fdisk gawk getopt git gzip hostapd-common iconv iw iwinfo jq \
-        jshn kmod-brcmfmac kmod-brcmutil kmod-cfg80211 kmod-mac80211 libjson-script liblucihttp \
-        liblucihttp-lua losetup lsattr lsblk lscpu mkf2fs mount-utils openssl-util parted \
-        perl-http-date perlbase-file perlbase-getopt perlbase-time perlbase-unicode perlbase-utf8 \
-        pigz ppp ppp-mod-pppoe pv rename resize2fs runc tar tini ttyd tune2fs \
-        uclient-fetch uhttpd uhttpd-mod-ubus unzip uqmi usb-modeswitch uuidgen wget-ssl whereis \
-        which wpad-basic wwan xfs-fsck xfs-mkfs xz xz-utils ziptool zoneinfo-asia zoneinfo-core zstd \
-        \
-        luci luci-base luci-compat luci-i18n-base-zh-cn luci-lib-base \
-        luci-lib-ip luci-lib-ipkg luci-lib-jsonc luci-lib-nixio luci-mod-admin-full luci-mod-network \
-        luci-mod-status luci-mod-system luci-proto-3g luci-proto-ipip luci-proto-ipv6 \
-        luci-proto-ncm luci-proto-openconnect luci-proto-ppp luci-proto-qmi luci-proto-relay \
-        \
-        luci-app-amlogic luci-i18n-amlogic-zh-cn \
-        \
-        ${config_list} \
-        "
-
-    # Rebuild firmware
-    make image PROFILE="" PACKAGES="${my_packages}" FILES="files"
+    # Rebuild firmware with OpenWrt default packages only
+    make image PROFILE="" FILES="files"
 
     sync && sleep 3
     echo -e "${INFO} [ ${openwrt_dir}/bin/targets/*/*/ ] directory contents: \n$(ls -lh bin/targets/*/*/ 2>/dev/null)"
@@ -282,8 +212,6 @@ echo -e "${INFO} Server disk usage before build: \n$(df -hT ${make_path}) \n"
 # Perform related operations
 download_imagebuilder
 adjust_settings
-custom_packages
-custom_config
 custom_files
 rebuild_firmware
 custom_settings
