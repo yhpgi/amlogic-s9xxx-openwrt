@@ -114,8 +114,8 @@ uboot_meson_gxbb=("p201.bin" "s905.bin")
 openwrt_ip="192.168.1.1"
 ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 
-# Initialize the target build device list
-make_board="all"
+# Initialize the target build device list (s905x2 only)
+make_board="s905x2"
 # Set OpenWrt firmware size (Unit: MiB, boot_mb >= 256, root_mb >= 512)
 boot_mb="512"
 root_mb="2048"
@@ -183,21 +183,13 @@ init_var() {
     echo -e "${STEPS} Initializing build variables..."
 
     # If it is followed by [ : ], it means that the option requires a parameter value
-    local options="b:r:u:k:a:p:s:n:"
+    local options="r:u:k:a:p:s:n:"
     parsed_args=$(getopt -o "${options}" -- "${@}")
     [[ ${?} -ne 0 ]] && error_msg "Parameter parsing failed."
     eval set -- "${parsed_args}"
 
     while true; do
         case "${1}" in
-        -b | --Board)
-            if [[ -n "${2}" ]]; then
-                make_board="${2// /}"
-                shift 2
-            else
-                error_msg "Invalid -b parameter [ ${2} ]!"
-            fi
-            ;;
         -r | --kernelRepository)
             if [[ -n "${2}" ]]; then
                 kernel_repo="${2}"

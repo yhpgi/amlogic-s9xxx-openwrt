@@ -10,10 +10,6 @@ inputs:
     description: "Select armsr-armv8 file path."
     required: false
     default: "openwrt/bin/targets/*/*/*rootfs.tar.gz"
-  openwrt_board:
-    description: "Select device board."
-    required: false
-    default: "all"
   kernel_repo:
     description: "Select kernel repository."
     required: false
@@ -97,7 +93,6 @@ runs:
         cd ${{ github.action_path }}
         echo -e "Starting OpenWrt build process..."
         make_command=""
-        [[ -n "${{ inputs.openwrt_board }}" ]] && make_command="${make_command} -b ${{ inputs.openwrt_board }}"
         [[ -n "${{ inputs.kernel_repo }}" ]] && make_command="${make_command} -r ${{ inputs.kernel_repo }}"
         [[ -n "${{ inputs.kernel_usage }}" ]] && make_command="${make_command} -u ${{ inputs.kernel_usage }}"
         [[ -n "${{ inputs.openwrt_kernel }}" ]] && make_command="${make_command} -k ${{ inputs.openwrt_kernel }}"
