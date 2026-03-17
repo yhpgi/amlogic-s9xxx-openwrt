@@ -190,7 +190,7 @@ git add README.cn.md documents/README.cn.md
 git commit -m "docs: focus on s905x2 imagebuilder and kernel"
 ```
 
-### Task 5: Use Default OpenWrt Packages Only
+### Task 5: Use OpenWrt 25 Default Package List
 
 **Files:**
 - Modify: `config/imagebuilder/imagebuilder.sh`
@@ -200,19 +200,19 @@ git commit -m "docs: focus on s905x2 imagebuilder and kernel"
 
 **Step 1: Write the failing test**
 
-Run: `rg -n "custom packages|Custom package|PACKAGES=|config_list" config/imagebuilder/imagebuilder.sh`
+Run: `rg -n "config_list|custom packages" config/imagebuilder/imagebuilder.sh`
 
-Expected: Matches found.
+Expected: Matches found (custom package hooks exist).
 
 **Step 2: Implement minimal changes**
 
-- Skip custom package downloads and custom package config usage.
-- Build ImageBuilder with default OpenWrt packages only (no extra package list).
-- Update docs to state default package set only.
+- Remove custom package downloads and custom package config usage.
+- Build ImageBuilder with the OpenWrt 25 default package list (hardcoded list).
+- Update docs to state OpenWrt 25 default package list is used.
 
 **Step 3: Run test to verify it passes**
 
-Run: `rg -n "custom packages|Custom package|PACKAGES=|config_list" config/imagebuilder/imagebuilder.sh`
+Run: `rg -n "config_list|custom packages" config/imagebuilder/imagebuilder.sh`
 
 Expected: No matches referencing custom package selection.
 

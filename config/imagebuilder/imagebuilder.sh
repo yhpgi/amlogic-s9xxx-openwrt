@@ -132,8 +132,20 @@ rebuild_firmware() {
     cd ${imagebuilder_path}
     echo -e "${STEPS} Building OpenWrt firmware with Image Builder..."
 
-    # Rebuild firmware with OpenWrt default packages only
-    make image PROFILE="" FILES="files"
+    # Rebuild firmware with OpenWrt 25 default package list
+    default_packages="\
+        apk-mbedtls base-files blkid ca-bundle dnsmasq dropbear e2fsprogs firewall4 fstools \
+        kmod-fs-vfat kmod-nft-offload libc libgcc libustream-mbedtls logd mkf2fs mtd netifd \
+        nftables odhcp6c odhcpd-ipv6only ppp ppp-mod-pppoe procd-ujail uci uclient-fetch \
+        urandom-seed urngd kmod-amazon-ena kmod-e1000e kmod-vmxnet3 kmod-rtc-rx8025 \
+        kmod-i2c-mux-pca954x kmod-gpio-pca953x partx-utils kmod-wdt-sp805 kmod-mvneta \
+        kmod-mvpp2 kmod-fsl-dpaa1-net kmod-fsl-dpaa2-net kmod-fsl-enetc-net kmod-dwmac-imx \
+        kmod-fsl-fec kmod-dwmac-rockchip kmod-dwmac-sun8i kmod-phy-aquantia kmod-phy-broadcom \
+        kmod-phy-marvell kmod-phy-marvell-10g kmod-sfp kmod-atlantic kmod-bcmgenet \
+        kmod-octeontx2-net kmod-renesas-net-avb kmod-phy-realtek kmod-phy-smsc \
+        kmod-thunderx-net luci \
+        "
+    make image PROFILE="" PACKAGES="${default_packages}" FILES="files"
 
     sync && sleep 3
     echo -e "${INFO} [ ${openwrt_dir}/bin/targets/*/*/ ] directory contents: \n$(ls -lh bin/targets/*/*/ 2>/dev/null)"
