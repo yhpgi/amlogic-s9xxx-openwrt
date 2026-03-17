@@ -145,18 +145,14 @@ rebuild_firmware() {
         kmod-usb-serial kmod-usb-serial-option kmod-usb-serial-wwan kmod-usb-serial-qualcomm \
         kmod-usb-serial-sierrawireless modemmanager luci-proto-modemmanager qmi-utils \
         mbim-utils usbutils luci-proto-ncm kmod-usb-ohci kmod-usb-uhci kmod-usb2 kmod-usb-ehci \
-        kmod-usb3 kmod-nls-utf8 kmod-macvlan usb-modeswitch xmm-modem luci-proto-xmm \
+        kmod-usb3 kmod-nls-utf8 kmod-macvlan usb-modeswitch \
         \
-        atinout modeminfo modemband sms-tool luci-app-modeminfo luci-app-modemband \
-        luci-app-sms-tool-js picocom minicom modeminfo-serial-dell modeminfo-serial-fibocom \
-        modeminfo-serial-sierra modeminfo-serial-tw modeminfo-serial-xmm \
-        \
-        kmod-usb-storage luci-app-diskman \
+        kmod-usb-storage \
         \
         php8 php8-cli php8-fastcgi php8-fpm php8-mod-session php8-mod-ctype php8-mod-fileinfo \
         php8-mod-zip php8-mod-iconv php8-mod-mbstring \
         \
-        btrfs-progs kmod-fs-btrfs luci-app-amlogic \
+        btrfs-progs kmod-fs-btrfs \
         "
     excluded_packages="-procd-ujail -dnsmasq"
     make image PROFILE="" PACKAGES="${required_packages} ${excluded_packages}" FILES="files"
@@ -236,7 +232,7 @@ echo -e "${INFO} Source: [ ${op_sourse} ], Branch: [ ${op_branch} ]"
 echo -e "${INFO} Server disk usage before build: \n$(df -hT ${make_path}) \n"
 #
 # Perform related operations
-download_imagebuilder
+#download_imagebuilder
 adjust_settings
 custom_files
 rebuild_firmware
