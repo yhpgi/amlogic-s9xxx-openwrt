@@ -22,7 +22,7 @@ sudo ./remake -k 6.12.y
 **4. ImageBuilder Customization**
 - Script: `config/imagebuilder/imagebuilder.sh`
 - Custom files overlay: `config/imagebuilder/files`
-Package selection uses the OpenWrt 25 default package list (hardcoded in the script).
+Package selection uses a required package list (hardcoded in the script).
 
 **Defaults**
 - IP: `192.168.1.1`

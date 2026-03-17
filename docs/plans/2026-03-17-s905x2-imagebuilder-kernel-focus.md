@@ -190,7 +190,7 @@ git add README.cn.md documents/README.cn.md
 git commit -m "docs: focus on s905x2 imagebuilder and kernel"
 ```
 
-### Task 5: Use OpenWrt 25 Default Package List
+### Task 5: Use Required Package List
 
 **Files:**
 - Modify: `config/imagebuilder/imagebuilder.sh`
@@ -207,8 +207,8 @@ Expected: Matches found (custom package hooks exist).
 **Step 2: Implement minimal changes**
 
 - Remove custom package downloads and custom package config usage.
-- Build ImageBuilder with the OpenWrt 25 default package list (hardcoded list).
-- Update docs to state OpenWrt 25 default package list is used.
+- Build ImageBuilder with the required package list (hardcoded list).
+- Update docs to state the required package list is used.
 
 **Step 3: Run test to verify it passes**
 
